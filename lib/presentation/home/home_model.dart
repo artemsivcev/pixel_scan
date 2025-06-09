@@ -24,9 +24,7 @@ class HomeModel extends ChangeNotifier {
   }
 
   List<DocumentModel> allDocuments = [];
-  List<DocumentModel> documents = [
-    DocumentModel(id: 1, files: [''], createdAt: DateTime.now(), name: 'Test')
-  ];
+  List<DocumentModel> documents = [];
   bool sortAscending = true;
 
   HomeModel({
@@ -37,7 +35,7 @@ class HomeModel extends ChangeNotifier {
 
   void init() {
     allDocuments = documentsRepository.getScannedDocuments();
-    // documents = allDocuments;
+    documents = allDocuments;
     notifyListeners();
   }
 
