@@ -14,9 +14,14 @@ class PdfRepository {
 
     for (final path in document.files) {
       final image = pw.MemoryImage(File(path).readAsBytesSync());
-      pdf.addPage(pw.Page(build: (context) {
-        return pw.Center(child: pw.Image(image));
-      }));
+      pdf.addPage(
+        pw.Page(
+          build: (context) {
+            return pw.Center(child: pw.Image(image));
+          },
+          margin: pw.EdgeInsets.zero,
+        ),
+      );
     }
 
     final output = await getTemporaryDirectory();

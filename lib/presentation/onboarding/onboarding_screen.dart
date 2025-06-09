@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:localization/localization.dart';
 import 'package:pixel_scan/presentation/common/app_images.dart';
 import 'package:pixel_scan/presentation/paywall/paywall_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -34,65 +34,63 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        height: MediaQuery.sizeOf(context).height,
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            Positioned(
-              right: 0,
-              top: kToolbarHeight,
-              child: Image.asset(
-                AppImages().onboardingBgRightTop,
-              ),
+      backgroundColor: Color(0xffF7F7F7),
+      body: Stack(
+        fit: StackFit.passthrough,
+        children: [
+          Positioned(
+            right: 0,
+            top: kToolbarHeight.h,
+            child: Image.asset(
+              AppImages().onboardingBgRightTop,
             ),
-            Positioned(
-              left: 24,
-              top: kToolbarHeight,
-              child: RotatedBox(
-                quarterTurns: 1,
-                child: SmoothPageIndicator(
-                  controller: controller,
-                  count: 3,
-                  effect: const ExpandingDotsEffect(
-                    dotHeight: 5,
-                    dotWidth: 12,
-                    activeDotColor: Color(0xffFD1524),
-                  ),
+          ),
+          Positioned(
+            left: 24.w,
+            top: kToolbarHeight.h,
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: SmoothPageIndicator(
+                controller: controller,
+                count: 3,
+                effect: ExpandingDotsEffect(
+                  dotHeight: 5,
+                  dotWidth: 12,
+                  activeDotColor: Color(0xffFD1524),
                 ),
               ),
             ),
-            PageView.builder(
-              controller: controller,
-              itemCount: 3,
-              physics: NeverScrollableScrollPhysics(),
-              hitTestBehavior: HitTestBehavior.translucent,
-              clipBehavior: Clip.none,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (_, index) {
-                switch (index) {
-                  case 0:
-                    return OnboardingPage(
-                      controller: controller,
-                      title: 'onboarding_title_1'.i18n(),
-                      subtitle: 'onboarding_subtitle_1'.i18n(),
-                      image: AppImages().onboardingOne,
-                    );
-                  case 1:
-                    return OnboardingPage(
-                      controller: controller,
-                      title: 'onboarding_title_2'.i18n(),
-                      subtitle: 'onboarding_subtitle_2'.i18n(),
-                      image: AppImages().onboardingTwo,
-                    );
-                  case 2:
-                    return PaywallScreen();
-                }
-                return SizedBox.shrink();
-              },
-            ),
-          ],
-        ),
+          ),
+          PageView.builder(
+            controller: controller,
+            itemCount: 3,
+            physics: NeverScrollableScrollPhysics(),
+            hitTestBehavior: HitTestBehavior.translucent,
+            clipBehavior: Clip.none,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (_, index) {
+              switch (index) {
+                case 0:
+                  return OnboardingPage(
+                    controller: controller,
+                    title: 'onboarding_title_1'.i18n(),
+                    subtitle: 'onboarding_subtitle_1'.i18n(),
+                    image: AppImages().onboardingOne,
+                  );
+                case 1:
+                  return OnboardingPage(
+                    controller: controller,
+                    title: 'onboarding_title_2'.i18n(),
+                    subtitle: 'onboarding_subtitle_2'.i18n(),
+                    image: AppImages().onboardingTwo,
+                  );
+                case 2:
+                  return PaywallScreen();
+              }
+              return SizedBox.shrink();
+            },
+          ),
+        ],
       ),
     );
   }
@@ -115,14 +113,14 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: kToolbarHeight),
+      padding: EdgeInsets.only(top: kToolbarHeight.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 52),
+            padding: EdgeInsets.only(left: 52.w),
             child: Text(
               title,
               style: TextStyle(
@@ -132,9 +130,9 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 24),
+          SizedBox(height: 24.h),
           Padding(
-            padding: const EdgeInsets.only(left: 52),
+            padding: EdgeInsets.only(left: 52.w),
             child: Text(
               subtitle,
               style: TextStyle(
@@ -145,21 +143,24 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 8),
-          Center(
-            child: Image.asset(
-              image,
-              width: MediaQuery.sizeOf(context).width * 0.65,
+          SizedBox(height: 22.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32.w),
+            child: Center(
+              child: Image.asset(
+                image,
+                width: 330.w,
+                height: 450.h,
+              ),
             ),
           ),
           Spacer(),
           Padding(
-            padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight / 2),
+            padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight.h),
             child: SizedBox(
-              height: 58,
-              width: MediaQuery.sizeOf(context).width,
+              width: double.maxFinite,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26),
+                padding: EdgeInsets.symmetric(horizontal: 26.w),
                 child: FilledButton(
                     onPressed: () {
                       controller.nextPage(
@@ -176,12 +177,12 @@ class OnboardingPage extends StatelessWidget {
                       shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
-                            Radius.circular(18),
+                            Radius.circular(18.r),
                           ),
                         ),
                       ),
                       padding: WidgetStateProperty.all(
-                        EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        EdgeInsets.symmetric(horizontal: 24.h, vertical: 20.w),
                       ),
                     ),
                     child: Row(
@@ -197,8 +198,8 @@ class OnboardingPage extends StatelessWidget {
                         Spacer(),
                         SvgPicture.asset(
                           AppVectors().arrowNext,
-                          width: 48,
-                          height: 16,
+                          width: 48.w,
+                          height: 16.h,
                         ),
                       ],
                     )),

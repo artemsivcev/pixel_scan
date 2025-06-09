@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           LoadingOverlay.hide();
         }
         return Scaffold(
+          backgroundColor: Color(0xffF7F7F7),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: MediaQuery.of(context).viewInsets.bottom > 0
@@ -69,13 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 64),
+                      padding: EdgeInsets.symmetric(horizontal: 64.w),
                       child: Container(
                         width: MediaQuery.sizeOf(context).width,
                         height: 68,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(100),
+                            borderRadius: BorderRadius.circular(100.r),
                             boxShadow: [
                               BoxShadow(
                                 color: Color(0x35353540).withValues(alpha: 0.1),
@@ -91,8 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         model.scanDocument();
                       },
                       child: Container(
-                        width: 82,
-                        height: 82,
+                        width: 82.w,
+                        height: 82.w,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
@@ -106,9 +107,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               )
                             ]),
                         child: Container(
-                          width: 79,
-                          height: 79,
-                          padding: EdgeInsets.all(16),
+                          width: 79.w,
+                          height: 79.w,
+                          padding: EdgeInsets.all(16.w),
                           decoration: BoxDecoration(
                             color: Color(0xffFD1524),
                             shape: BoxShape.circle,
@@ -120,10 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
           body: Padding(
-            padding: const EdgeInsets.only(
-              top: kToolbarHeight + 18.0,
-              left: 18,
-              right: 18,
+            padding: EdgeInsets.only(
+              top: kToolbarHeight.h + 30.h,
+              left: 18.w,
+              right: 18.w,
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -131,9 +132,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Image.asset(
                     AppImages().loading,
-                    width: 150,
+                    width: 150.w,
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   TextField(
                     controller: searchTextController,
                     onChanged: (text) {
@@ -150,25 +151,35 @@ class _HomeScreenState extends State<HomeScreen> {
                               icon: Icon(Icons.close),
                             )
                           : Icon(Icons.search),
-                      labelStyle: TextStyle(color: Color(0xffFD1524)),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 22.w,
+                        vertical: 15.h,
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Color(0xffFD1524), width: 2),
-                        borderRadius: BorderRadius.circular(16),
+                            BorderSide(color: Colors.transparent, width: 0),
+                        borderRadius: BorderRadius.circular(16.r),
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                        borderRadius: BorderRadius.circular(16.r),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
                   ),
-                  SizedBox(height: 26),
+                  SizedBox(height: 26.h),
                   if (model.documents.isEmpty)
                     EmptyDocuments()
                   else
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 120),
+                      padding: EdgeInsets.only(bottom: 120.h),
                       child: DocumentsList(),
                     ),
                 ],
@@ -187,11 +198,11 @@ class EmptyDocuments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.sp),
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Color(0x35353540).withValues(alpha: 0.05),
@@ -213,13 +224,14 @@ class EmptyDocuments extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.w),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   AppImages().emptyDocs,
-                  height: 150.h,
+                  width: 190.w,
+                  fit: BoxFit.contain,
                 ),
                 SizedBox(height: 16.h),
                 Text(
@@ -228,6 +240,7 @@ class EmptyDocuments extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 19.sp,
+                    height: 1.2,
                   ),
                 ),
                 SizedBox(height: 10.h),
@@ -256,11 +269,11 @@ class DocumentsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeModel>(builder: (_, model, __) {
       return Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
               color: Color(0x35353540).withValues(alpha: 0.05),
@@ -278,7 +291,7 @@ class DocumentsList extends StatelessWidget {
                   'documents'.i18n(),
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 21,
+                    fontSize: 21.sp,
                   ),
                 ),
                 Spacer(),
@@ -287,9 +300,9 @@ class DocumentsList extends StatelessWidget {
                     model.sortDocuments();
                   },
                   icon: Container(
-                    width: 34,
-                    height: 34,
-                    padding: EdgeInsets.all(8),
+                    width: 34.w,
+                    height: 34.w,
+                    padding: EdgeInsets.all(8.w),
                     decoration: BoxDecoration(
                       color: Color(0xffFD1524),
                       shape: BoxShape.circle,
@@ -299,19 +312,22 @@ class DocumentsList extends StatelessWidget {
                 ),
               ],
             ),
-            ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              itemCount: model.documents.length,
-              itemBuilder: (context, index) {
-                return DocumentTile(
-                  document: model.documents[index],
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 14);
-              },
+            Padding(
+              padding: EdgeInsets.only(top: 16.h),
+              child: ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: model.documents.length,
+                itemBuilder: (context, index) {
+                  return DocumentTile(
+                    document: model.documents[index],
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 14.h);
+                },
+              ),
             ),
           ],
         ),
@@ -336,7 +352,7 @@ class DocumentTile extends StatelessWidget {
           });
         },
         child: Container(
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.all(12.w),
           width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
             color: Color(0xffF7F7F7),
@@ -346,13 +362,13 @@ class DocumentTile extends StatelessWidget {
             children: [
               Image.file(
                 File(document.files.first),
-                height: 64,
-                width: 49,
+                height: 64.h,
+                width: 49.w,
                 errorBuilder: (context, error, stackTrace) {
                   return SizedBox.shrink();
                 },
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 flex: 10,
                 child: Column(
@@ -365,7 +381,7 @@ class DocumentTile extends StatelessWidget {
                       maxLines: 1,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 17,
+                        fontSize: 17.sp,
                       ),
                     ),
                     Text(
@@ -373,7 +389,7 @@ class DocumentTile extends StatelessWidget {
                       maxLines: 1,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         color: Color(0xffCBCBCB),
                       ),
                     ),
@@ -473,6 +489,7 @@ class DocumentTile extends StatelessWidget {
                 icon: Icon(
                   Icons.more_vert,
                   color: Color(0xffFD1524),
+                  size: 24.w,
                 ),
               ),
             ],

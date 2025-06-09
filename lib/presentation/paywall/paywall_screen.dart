@@ -44,25 +44,26 @@ class _PaywallScreenState extends State<PaywallScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: widget.postAction != null ? null : Colors.transparent,
-      body: ChangeNotifierProvider<PaywallModel>.value(
-        value: _model,
-        child: Consumer<PaywallModel>(builder: (_, model, __) {
-          if (model.isLoading) {
-            Future.delayed(Duration(milliseconds: 200), () {
-              if (context.mounted) {
-                LoadingOverlay.show(context);
-              }
-            });
-          } else {
-            LoadingOverlay.hide();
-          }
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor:
+            widget.postAction != null ? Color(0xffF7F7F7) : Colors.transparent,
+        body: ChangeNotifierProvider<PaywallModel>.value(
+          value: _model,
+          child: Consumer<PaywallModel>(builder: (_, model, __) {
+            if (model.isLoading) {
+              Future.delayed(Duration(milliseconds: 200), () {
+                if (context.mounted) {
+                  LoadingOverlay.show(context);
+                }
+              });
+            } else {
+              LoadingOverlay.hide();
+            }
 
-          return Padding(
-            padding: const EdgeInsets.only(top: kToolbarHeight),
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height,
+            return Padding(
+              padding: EdgeInsets.only(top: kToolbarHeight.h),
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -75,7 +76,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                              padding: const EdgeInsets.only(left: 52),
+                              padding: EdgeInsets.only(left: 52),
                               child: RichText(
                                 text: TextSpan(
                                   style: TextStyle(
@@ -100,22 +101,22 @@ class _PaywallScreenState extends State<PaywallScreen> {
                               )),
                           Spacer(),
                           Padding(
-                            padding: const EdgeInsets.only(right: 28),
+                            padding: EdgeInsets.only(right: 28.w),
                             child: IconButton(
                                 onPressed: () {
                                   context.go(homeRoute);
                                 },
                                 icon: Icon(
                                   Icons.close,
-                                  size: 32,
+                                  size: 32.sp,
                                   color: Colors.black.withValues(alpha: 0.1),
                                 )),
                           ),
                         ],
                       ),
-                      SizedBox(height: 24),
+                      SizedBox(height: 24.h),
                       Padding(
-                        padding: const EdgeInsets.only(left: 52),
+                        padding: EdgeInsets.only(left: 52.w),
                         child: Text(
                           'paywall_subtitle'.i18n(),
                           style: TextStyle(
@@ -126,39 +127,41 @@ class _PaywallScreenState extends State<PaywallScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Center(
-                            child: Image.asset(
+                      SizedBox(height: 8.w),
+                      Center(
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          alignment: Alignment.topCenter,
+                          children: [
+                            Image.asset(
                               AppImages().paywall,
-                              width: MediaQuery.sizeOf(context).width,
+                              width: ScreenUtil().screenWidth,
+                              fit: BoxFit.fitWidth,
                             ),
-                          ),
-                          Positioned(
-                            right: 32,
-                            top: -24,
-                            child: SvgPicture.asset(
-                              AppVectors().rocket,
+                            Positioned(
+                              right: 32,
+                              top: -24,
+                              child: SvgPicture.asset(
+                                AppVectors().rocket,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: kBottomNavigationBarHeight / 2),
+                      padding:
+                          EdgeInsets.only(bottom: kBottomNavigationBarHeight.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 26),
+                            padding: EdgeInsets.symmetric(horizontal: 26.w),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -173,7 +176,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                         SubscriptionType.premiumWeek);
                                   },
                                 ),
-                                SizedBox(height: 12),
+                                SizedBox(height: 12.h),
                                 SubscriptionButton(
                                   isSelected: model.selectedSubscription ==
                                       SubscriptionType.premiumYear,
@@ -187,13 +190,11 @@ class _PaywallScreenState extends State<PaywallScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 24),
+                          SizedBox(height: 24.h),
                           SizedBox(
-                            height: 58,
-                            width: MediaQuery.sizeOf(context).width,
+                            width: double.maxFinite,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 26),
+                              padding: EdgeInsets.symmetric(horizontal: 26.w),
                               child: FilledButton(
                                   onPressed: () {
                                     model.subscribe().then((_) {
@@ -221,42 +222,48 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                     shape: WidgetStateProperty.all(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(18),
+                                          Radius.circular(18.r),
                                         ),
                                       ),
                                     ),
                                     padding: WidgetStateProperty.all(
                                       EdgeInsets.symmetric(
-                                          horizontal: 24, vertical: 12),
+                                          horizontal: 24.h, vertical: 20.w),
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        model.selectedSubscription ==
-                                                SubscriptionType.premiumWeek
-                                            ? 'start-free-trial'.i18n()
-                                            : 'continue'.i18n(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 17.sp,
-                                          height: 1.2,
+                                  child: Center(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          model.selectedSubscription ==
+                                                  SubscriptionType.premiumWeek
+                                              ? 'start-free-trial'.i18n()
+                                              : 'continue'.i18n(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 17.sp,
+                                            height: 1.2,
+                                          ),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      SvgPicture.asset(
-                                        AppVectors().arrowNext,
-                                        width: 48,
-                                        height: 16,
-                                      ),
-                                    ],
+                                        Spacer(),
+                                        SvgPicture.asset(
+                                          AppVectors().arrowNext,
+                                          width: 48.w,
+                                          height: 16.h,
+                                        ),
+                                      ],
+                                    ),
                                   )),
                             ),
                           ),
-                          SizedBox(height: 24),
+                          SizedBox(height: 24.h),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 26),
+                            padding: EdgeInsets.symmetric(horizontal: 26.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -285,8 +292,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                   ),
                                 ),
                                 Container(
-                                  height: 14,
-                                  width: 1.5,
+                                  height: 14.h,
+                                  width: 1.5.w,
                                   color: Color(0xff8B7979),
                                 ),
                                 GestureDetector(
@@ -303,8 +310,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                   ),
                                 ),
                                 Container(
-                                  height: 14,
-                                  width: 1.5,
+                                  height: 14.h,
+                                  width: 1.5.w,
                                   color: Color(0xff8B7979),
                                 ),
                                 GestureDetector(
@@ -329,9 +336,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   ),
                 ],
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
@@ -358,11 +365,11 @@ class SubscriptionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: 64,
-        padding: EdgeInsets.symmetric(horizontal: 14),
+        height: 68.h,
+        padding: EdgeInsets.symmetric(horizontal: 14.w),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: isSelected ? Color(0xffFD1524) : Colors.white,
           ),

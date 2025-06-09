@@ -18,7 +18,6 @@ Future<void> main() async {
   LocalJsonLocalization.delegate.directories = ['lib/i18n'];
 
   final providers = await createProviders();
-
   runApp(MyApp(providers: providers));
 }
 
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(395, 760),
+      designSize: const Size(393, 852),
       minTextAdapt: true,
       child: MultiProvider(
         providers: providers,

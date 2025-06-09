@@ -1,18 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart'
-    show FlutterNativeSplash;
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixel_scan/data/models/document_model.dart';
 import 'package:pixel_scan/data/repository/onboarding_repository.dart';
 import 'package:pixel_scan/presentation/document/document_screen.dart';
+import 'package:pixel_scan/presentation/editor/editor_screen.dart';
+import 'package:pixel_scan/presentation/home/home_screen.dart';
 import 'package:pixel_scan/presentation/onboarding/onboarding_screen.dart';
 import 'package:pixel_scan/presentation/paywall/paywall_screen.dart';
 import 'package:provider/provider.dart';
-
-import 'data/models/document_model.dart';
-import 'presentation/editor/editor_screen.dart';
-import 'presentation/home/home_screen.dart';
 
 final homeRoute = '/';
 final onboardingRoute = '/onboarding';

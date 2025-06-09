@@ -73,159 +73,168 @@ class _DocumentScreenState extends State<DocumentScreen> {
           LoadingOverlay.hide();
         }
         return Scaffold(
+          backgroundColor: Color(0xffF7F7F7),
           body: Column(
             children: [
-              SizedBox(height: kToolbarHeight),
+              SizedBox(height: kToolbarHeight.h),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      width: MediaQuery.sizeOf(context).width,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x35353540).withValues(alpha: 0.05),
-                            offset: Offset(0, 0),
-                            blurRadius: 1,
-                            spreadRadius: 0,
-                          )
-                        ],
+                padding: EdgeInsets.symmetric(horizontal: 18.w),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 6.h,
+                  ),
+                  width: MediaQuery.sizeOf(context).width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x35353540).withValues(alpha: 0.05),
+                        offset: Offset(0, 0),
+                        blurRadius: 1,
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 24.h,
+                        ),
+                        padding: EdgeInsets.zero,
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.sizeOf(context).width * 0.35,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    model.document.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 19.sp,
-                                    ),
-                                  ),
+                      Expanded(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                model.document.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18.sp,
+                                  height: 1.1,
                                 ),
-                                Text(
-                                  ' | ${currentPage + 1} ${'of'.i18n()} ${model.document.files.length}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 17.sp,
-                                    color: Color(0xffCBCBCB),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          TextButton(
-                            onPressed: () async {
-                              final file = await model.createPdf();
+                            Text(
+                              ' | ${currentPage + 1} ${'of'.i18n()} ${model.document.files.length}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15.sp,
+                                color: Color(0xffCBCBCB),
+                                height: 0.8,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      TextButton(
+                        onPressed: () async {
+                          final file = await model.createPdf();
 
-                              if (file == null) {
-                                return;
-                              }
+                          if (file == null) {
+                            return;
+                          }
 
-                              if (!model.subscriptionRepository
-                                  .isSubscribed()) {
-                                if (context.mounted) {
-                                  context.push(paywallRoute, extra: () {
-                                    model.shareDocument(file);
-                                  });
-                                }
-                              } else {
+                          if (!model.subscriptionRepository.isSubscribed()) {
+                            if (context.mounted) {
+                              context.push(paywallRoute, extra: () {
                                 model.shareDocument(file);
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.red,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'share'.i18n(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 17.sp,
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Icon(Icons.share),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    SizedBox(
-                      height: (MediaQuery.sizeOf(context).height * 0.45).h,
-                      child: PageView.builder(
-                        controller: controller,
-                        itemCount: model.document.files.length,
-                        itemBuilder: (context, index) {
-                          return Image.file(File(model.document.files[index]));
+                              });
+                            }
+                          } else {
+                            model.shareDocument(file);
+                          }
                         },
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 67.h,
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: model.document.files.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          final needBorder = _isFileCurrentlyVisible(
-                              model.document.files[index]);
-                          return GestureDetector(
-                            onTap: () {
-                              controller.jumpToPage(index);
-                            },
-                            child: Container(
-                              height: 67.h,
-                              width: 52.w,
-                              decoration: BoxDecoration(
-                                border: needBorder
-                                    ? Border.all(
-                                        color: Color(0xffFD1524),
-                                        width: 1,
-                                      )
-                                    : null,
-                              ),
-                              child: Image.file(
-                                File(
-                                  model.document.files[index],
-                                ),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          padding: EdgeInsets.zero,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'share'.i18n(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17.sp,
+                                height: 0.8,
                               ),
                             ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(width: 12.w);
-                        },
+                            SizedBox(width: 8.w),
+                            Icon(Icons.share),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Spacer(),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(24.h),
+                  child: PageView.builder(
+                    controller: controller,
+                    itemCount: model.document.files.length,
+                    itemBuilder: (context, index) {
+                      return Image.file(File(model.document.files[index]));
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18.w),
+                child: SizedBox(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 67.h,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: model.document.files.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final needBorder =
+                          _isFileCurrentlyVisible(model.document.files[index]);
+                      return GestureDetector(
+                        onTap: () {
+                          controller.jumpToPage(index);
+                        },
+                        child: Container(
+                          height: 67.h,
+                          width: 52.w,
+                          decoration: BoxDecoration(
+                            border: needBorder
+                                ? Border.all(
+                                    color: Color(0xffFD1524),
+                                    width: 1,
+                                  )
+                                : null,
+                          ),
+                          child: Image.file(
+                            File(
+                              model.document.files[index],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(width: 12.w);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: 24.h),
               Container(
                 padding: EdgeInsets.all(16),
                 width: MediaQuery.sizeOf(context).width,
