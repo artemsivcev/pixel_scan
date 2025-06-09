@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 64.w),
                       child: Container(
                         width: MediaQuery.sizeOf(context).width,
-                        height: 68,
+                        height: 68.h,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(100.r),
@@ -94,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         width: 82.w,
                         height: 82.w,
+                        padding: EdgeInsets.all(3.w),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
