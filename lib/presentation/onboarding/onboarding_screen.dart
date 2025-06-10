@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:localization/localization.dart';
 import 'package:pixel_scan/presentation/common/app_images.dart';
 import 'package:pixel_scan/presentation/paywall/paywall_screen.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -143,7 +143,7 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 22.h),
+          Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 32.w),
             child: Center(
